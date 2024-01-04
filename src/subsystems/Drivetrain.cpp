@@ -1,5 +1,6 @@
 #include "main.h"
 
+//this is the function that runs every cycle of the robot for drivetrain
 void drivetrainPeriodic(){
     //get joysticks for arcade
     int y1 = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
@@ -14,7 +15,6 @@ void drivetrainPeriodic(){
     arcadeDrive(y1, x2);
 }
 
-//bad
 void tankDrive(int left, int right) {
     //brings any numbers out side of range into range
     left = max(-127, min(127, left));
@@ -24,9 +24,8 @@ void tankDrive(int left, int right) {
     rightDrive = right;
 }
 
-//good
 void arcadeDrive(int moveValue, int rotateValue) {
-    //mixes the numbers
+    //mixes the numbers appropiately for arcade
     int leftMotorSpeed = moveValue - rotateValue;
     int rightMotorSpeed = moveValue + rotateValue;
     //determines which is higher
@@ -36,6 +35,7 @@ void arcadeDrive(int moveValue, int rotateValue) {
         leftMotorSpeed = (leftMotorSpeed / mx) * 127;
         rightMotorSpeed = (rightMotorSpeed / mx) * 127;
     }
+    //uses the tank drive function
     tankDrive(leftMotorSpeed, rightMotorSpeed);
 }
 
