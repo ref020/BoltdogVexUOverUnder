@@ -7,7 +7,7 @@ if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
   cat_motor.move_absolute(60,100);
 }
 
-//Send that MF to the shadow realm
+//Send that thang to the shadow realm
 if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
   cat_motor.move_absolute(110,100);
 }
