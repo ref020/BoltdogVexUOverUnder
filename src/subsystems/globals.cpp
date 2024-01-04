@@ -35,17 +35,21 @@ MOTORS
 */
         //TODO: figure out gears
 //Drivetrain
+    //left motors
     pros::Motor flDrive(1, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
     pros::Motor mlDrive(2, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
     pros::Motor blDrive(3, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
+    //right motors
     pros::Motor frDrive(11, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
     pros::Motor mrDrive(12, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
     pros::Motor brDrive(13, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
 
+    //the drivetrain motor groups
     pros::Motor_Group leftDrive({flDrive, mlDrive, blDrive});
     pros::Motor_Group rightDrive({frDrive, mrDrive, brDrive});
 
+    //limit switches
     pros::ADIDigitalIn leftBumpSwitch('a');
     pros::ADIDigitalIn rightBumpSwitch('b');
     
