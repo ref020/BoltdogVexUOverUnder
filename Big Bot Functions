@@ -1,3 +1,6 @@
+pros::Controller master (pros::E_CONTROLLER_MASTER);
+pros::Motor cat_motor (4);
+
 //Cat Functions
 //Prime the laucher
 if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
