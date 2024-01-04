@@ -2,12 +2,13 @@ pros::Controller master (pros::E_CONTROLLER_MASTER);
 pros::Motor cat_motor (4);
 
 //Cat Functions
-//Prime the laucher
+//Prime the cata
 if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
   cat_motor.move_absolute(60,100);
 }
 
-//Send that thang to the shadow realm
+//Launch the cata
+//AKA Send that thang to the shadow realm
 if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
   cat_motor.move_absolute(110,100);
 }
