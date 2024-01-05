@@ -1,7 +1,7 @@
 pros::Controller master (pros::E_CONTROLLER_MASTER);
 pros::Motor cat_motor (4);
-
-//Cat Functions
+while(true){
+	//Cat Functions
 	//Prime the cata
 	if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
   	catMotor.move(100);
@@ -15,3 +15,4 @@ pros::Motor cat_motor (4);
 
 	else catMotor.brake();
     pros::delay(2);
+	}
