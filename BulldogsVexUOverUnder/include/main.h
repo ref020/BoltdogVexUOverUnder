@@ -77,7 +77,7 @@ void opcontrol(void);
  */
 #include "subsystemHeaders/Climber.hpp"
 #include "subsystemHeaders/Drivetrain.hpp"
-#include "subsystemHeaders/Shooter.hpp"
+#include "subsystemHeaders/Catapult.hpp"
 #include "subsystemHeaders/globals.hpp"
 #include "subsystemHeaders/Wings.hpp"
 

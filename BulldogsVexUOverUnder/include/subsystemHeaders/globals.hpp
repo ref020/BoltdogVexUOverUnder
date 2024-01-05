@@ -3,14 +3,15 @@
 /*
 FUNCTIONS
 */
-extern double max(double a, double b);
-extern double min(double a, double b);
+    extern double max(double a, double b);
+    extern double min(double a, double b);
 
 
 /*
 CONSTANTS
 */
- 
+    // Drive 
+    extern const int oneRotationEncoderCount;
 
 /*
 CONTROLLER
@@ -33,14 +34,14 @@ MOTORS
         extern pros::Motor_Group leftDrive;
         extern pros::Motor_Group rightDrive;
 
-        // extern pros::ADIDigitalIn rightBumpSwitch;
-        // extern pros::ADIDigitalIn leftBumpSwitch;
+        extern pros::ADIDigitalIn rightBumpSwitch;
+        extern pros::ADIDigitalIn leftBumpSwitch;
 
 
     //Shooter
-        // extern pros::Motor catMotor;
+        extern pros::Motor catMotor;
 
     //Wings
-        // extern pros::Motor wingMotor;
+        extern pros::Motor wingMotor;
 
     //Climber

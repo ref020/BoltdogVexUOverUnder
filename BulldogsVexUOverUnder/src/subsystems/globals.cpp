@@ -12,18 +12,17 @@ double min(double a, double b){
     return (a < b)? a: b;
 }
 
-
 /*
 CONSTANTS
 */
-
+    // Drive
+    const int oneRotationEncoderCount = 3000;
 
 
 /*
 CONTROLLER
 */
     pros::Controller controller(pros::E_CONTROLLER_MASTER);
-
 
 /*
 MOTORS
@@ -41,13 +40,13 @@ MOTORS
     pros::Motor_Group leftDrive({fLDrive, mLDrive, bLDrive});
     pros::Motor_Group rightDrive({fRDrive, mRDrive, bRDrive});
 
-    // pros::ADIDigitalIn leftBumpSwitch('a');
-    // pros::ADIDigitalIn rightBumpSwitch('b');
+    pros::ADIDigitalIn leftBumpSwitch('a');
+    pros::ADIDigitalIn rightBumpSwitch('b');
     
 //Shooter
-    // pros::Motor catMotor(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor catMotor(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Wings
-    // pros::Motor wingMotor(10, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor wingMotor(10, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Climber
