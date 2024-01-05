@@ -2,9 +2,9 @@
 
 void drivetrainPeriodic();
 
-void tankDrive(double left, double right);
+void tankDrive(int left, int right);
 
-void arcadeDrive(double moveValue, double rotateValue);
+void arcadeDrive(int moveValue, int rotateValue);
 
 void evenBotWithBeam();
 

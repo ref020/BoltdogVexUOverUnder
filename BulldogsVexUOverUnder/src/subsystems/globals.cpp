@@ -30,24 +30,24 @@ MOTORS
 */
         //TODO: figure out gears
 //Drivetrain
-    pros::Motor fLDrive(11, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mLDrive(12, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor bLDrive(13, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
-
-    pros::Motor fRDrive(18, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mRDrive(19, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor fRDrive(11, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mRDrive(12, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
     pros::Motor bRDrive(13, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Motor fLDrive(18, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mLDrive(19, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor bLDrive(20, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
     pros::Motor_Group leftDrive({fLDrive, mLDrive, bLDrive});
     pros::Motor_Group rightDrive({fRDrive, mRDrive, bRDrive});
 
-    pros::ADIDigitalIn leftBumpSwitch('a');
-    pros::ADIDigitalIn rightBumpSwitch('b');
+    // pros::ADIDigitalIn leftBumpSwitch('a');
+    // pros::ADIDigitalIn rightBumpSwitch('b');
     
 //Shooter
-    pros::Motor catMotor(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    // pros::Motor catMotor(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Wings
-    pros::Motor wingMotor(10, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    // pros::Motor wingMotor(10, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Climber
