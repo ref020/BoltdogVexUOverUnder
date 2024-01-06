@@ -1,13 +1,13 @@
 #include "main.h"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::Motor frontLeft(1);
+pros::Motor frontLeft(1, false);
 pros::Motor frontRight(2, true);
 pros::Motor cata(3);
-pros::Motor backLeft(9);
+pros::Motor backLeft(9 , false);
 pros::Motor backRight(10, true);
-pros::Motor_Group left({frontLeft, backLeft});
-pros::Motor_Group right({frontRight, backRight});
+pros::Motor_Group leftMG({frontLeft, backLeft});
+pros::Motor_Group rightMG({frontRight, backRight});
 pros::Motor leftLift(20, true);
 pros::Motor rightLift(11);
 pros::Motor_Group lift({leftLift, rightLift});
@@ -22,14 +22,27 @@ The following subroutines are used:
 -prime catapult
 */
 void movement() {
+	int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	
+	int leftP = power + turn;
+	int rightP = power - turn;
 
-	left.move(master.get_analog(ANALOG_LEFT_Y));
-	right.move(master.get_analog(ANALOG_RIGHT_Y));
+	// int mx = std::max(std::abs(leftP), std::abs(rightP))
+
+	// if(mx > 127){
+	// 	leftP = (leftP / mx) * 127
+	// 	rightP = (rightP / mx) * 127
+	// }
+
+	leftMG = leftP;
+	rightMG = rightP;
 }
 
 void primeCatapult() {
 
-	cata.move(50);
+	cata.move(70);
+	pros::delay(2);
 
 	while (cata.get_actual_velocity() >= 0.3) {
 
@@ -148,7 +161,7 @@ void opcontrol() {
 		//R2 = Prime Cata
         if (master.get_digital(DIGITAL_R1)) {
 
-        	launchTriball(); 
+			cata.move(127);
 			
 		} else {
 		
