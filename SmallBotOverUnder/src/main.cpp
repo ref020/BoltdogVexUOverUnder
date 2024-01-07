@@ -28,11 +28,11 @@ void movement() {
 	int leftP = power + turn;
 	int rightP = power - turn;
 
-	int mx = std::max(std::abs(leftP), std::abs(rightP))
+	int mx = std::max(std::abs(leftP), std::abs(rightP));
 
 	if(mx > 127){
-		leftP = (leftP / mx) * 127
-		rightP = (rightP / mx) * 127
+		leftP = (leftP / mx) * 127;
+		rightP = (rightP / mx) * 127;
 	}
 
 	leftMG = leftP;
