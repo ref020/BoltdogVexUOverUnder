@@ -1,17 +1,22 @@
 #include "main.h"
+#include <iostream>
+using namespace std;
 
 void catapultPeriodic()
 {
   // Prime the cata
-  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-    primeCatapult();
+  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+    manualPrimeCatapult();
   }
-  else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-    launchCatapult();
+  else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+    manualLaunchCatapult();
   }
   else {
     stopCatapult();
   }
+
+  pros::lcd::set_text(1, "Catapult Encoder: " + to_string(catMotor.get_position()));
+
 }
 
 // Prime the cata

@@ -1,18 +1,23 @@
 #include "main.h"
+#include <iostream>
+using namespace std;
+
+bool wingsOut = false;
+
 
 void wingsPeriodic() {
- 	if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-		manualOpenWings();
+
+	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B) && !wingsOut) {
+		flipWings(6000);
+		wingsOut = true;
+	}
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) && wingsOut) {
+		flipWings(0);
+		wingsOut = false;
 	}
 
-	//Open Wings
-	else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-		manualCloseWings();
-	}
+    pros::lcd::set_text(2, "Wings Encoder: " + to_string(wingMotor.get_position()));
 
-	else {
-		wingMotor.brake();
-	}
 }
 
 // Position-Controlled Wings

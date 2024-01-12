@@ -47,6 +47,11 @@ MOTORS
     pros::Motor catMotor(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Wings
-    pros::Motor wingMotor(10, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor wingMotor(15, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
 
 //Climber
+    pros::Motor leftClimbMotor(1, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor rightClimbMotor(2, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Motor_Group climb({leftClimbMotor, rightClimbMotor});
+

@@ -45,3 +45,7 @@ MOTORS
         extern pros::Motor wingMotor;
 
     //Climber
+        extern pros::Motor leftClimbMotor;
+        extern pros::Motor rightClimbMotor;
+
+        extern pros::Motor_Group climb;

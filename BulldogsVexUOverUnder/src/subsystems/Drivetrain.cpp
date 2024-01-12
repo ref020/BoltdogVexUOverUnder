@@ -1,17 +1,32 @@
 #include "main.h"
+#include <iostream>
+using namespace std;
 
 void drivetrainPeriodic() {
-    //get joysticks for arcade
-    int y1 = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    int x2 = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+    int y1 = 0;
+    int x2 = 0;
+
 
     //add a dead zone
-    if(abs(y1) < 10) 
-        y1 = 0;
-    if(abs(x2) < 10) 
-        x2 = 0;
+    // if(abs(y1) < 10) 
+    //     y1 = 0;
+    // if(abs(x2) < 10) 
+    //     x2 = 0;
+
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        //get joysticks for arcade
+        y1 = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        x2 = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+    }
+    else{
+        y1 = (controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
+        x2 = (controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .5);
+    }
+    pros::lcd::set_text(0, "Drivetrain Encoder: " + to_string(fLDrive.get_position()));
+
     //arcade drive
-    arcadeDrive(y1, x2);
+    arcadeDrive(y1, -x2);
+
 }
 
 //bad
@@ -43,8 +58,17 @@ void arcadeDrive(int moveValue, int rotateValue) {
 Autonomous Commands
 */
 
-void evenBotWithBeam(){
-
+void evenBotWithBeam() {
+    if(!(leftBumpSwitch.get_value() && rightBumpSwitch.get_value())) {
+        rightDrive = 127;
+        leftDrive = 127;
+    }
+    else{
+        if(leftBumpSwitch.get_value()) 
+            rightDrive = 127;
+        if(rightBumpSwitch.get_value()) 
+            leftDrive = 127;
+    }
 
 }
 
