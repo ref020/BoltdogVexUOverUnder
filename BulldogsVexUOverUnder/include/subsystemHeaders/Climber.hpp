@@ -2,11 +2,12 @@
 
 void climberInitialize();
 
-void climberPeriodic();
+void climberPeriodic(bool override);
 
 void climberToPosition(int position);
 
 void manualRaiseClimber();
 
-void mannualLowerClimb();
+void manualLowerClimber();
 
+void stopClimber();

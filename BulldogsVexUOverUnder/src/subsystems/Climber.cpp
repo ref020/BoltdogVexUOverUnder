@@ -7,8 +7,18 @@ void climberInitialize() {
     rightClimbMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
 }
 
-void climberPeriodic() {
-        pros::lcd::set_text(3, "Climb Encoder: " + to_string(leftClimbMotor.get_position()));
+void climberPeriodic(bool override) {
+    if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+        manualRaiseClimber();
+    }
+    else if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+        manualLowerClimber();
+    }
+    else {
+        stopClimber();
+    }
+
+    pros::lcd::set_text(3, "Climb Encoder: " + to_string(leftClimbMotor.get_position()));
 
 }
 
@@ -20,8 +30,12 @@ void manualRaiseClimber() {
     climb.move(50);
 }
 
-void mannualLowerClimb() {
-    climb.move(-100);
+void manualLowerClimber() {
+    climb.move(-50);
+}
+
+void stopClimber() {
+    climb.move(0);
 }
 
 

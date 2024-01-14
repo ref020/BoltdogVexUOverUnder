@@ -2,40 +2,133 @@
 #include <iostream>
 using namespace std;
 
-bool wingsOut = false;
+// bool wingsOut = false;
 
+void wingsInitialize() {
+	leftWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	rightWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+}
 
-void wingsPeriodic() {
+void wingsPeriodic(bool override) {
 
-	if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B) && !wingsOut) {
-		flipWings(6000);
-		wingsOut = true;
+	if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+		// flipLeftWing(300);
+		manualOpenLeftWing();
 	}
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A) && wingsOut) {
-		flipWings(0);
-		wingsOut = false;
+	else if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		// flipLeftWing(0);
+		manualCloseLeftWing();
+	}
+	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		// flipWings(300);
+		manualOpenWings();
+	}
+	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		// flipWings(300);
+		manualCloseWings();
+	}
+	else {
+		stopLeftWing();
+	}
+	
+	if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		// flipLeftWing(300);
+		manualOpenRightWing();
+	}
+	else if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		// flipLeftWing(0);
+		manualCloseRightWing();
+	}
+	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		// flipWings(300);
+		manualOpenWings();
+	}
+	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		// flipWings(300);
+		manualCloseWings();
+	}
+	else {
+		stopRightWing();
 	}
 
-    pros::lcd::set_text(2, "Wings Encoder: " + to_string(wingMotor.get_position()));
+	// currentLock();
 
+    pros::lcd::set_text(1, "Left Wing Encoder: " + to_string(leftWingMotor.get_position()));
+	pros::lcd::set_text(2, "Right Wing Encoder: " + to_string(leftWingMotor.get_position()));
+	pros::lcd::set_text(4, "Right Wing Current Draw " + to_string(leftWingMotor.get_current_draw()));
 }
 
 // Position-Controlled Wings
 void flipWings(int position) {
-	wingMotor.move_absolute(position, 600);
+	flipLeftWing(position);
+	flipRightWing(position);
 }
 
+void flipLeftWing(int position) {
+	leftWingMotor.move_absolute(position, 600);
+}
+
+void flipRightWing(int position) {
+	rightWingMotor.move_absolute(position, 600);
+}
+
+
 // Move Motor Directly (would be used for testing)
+void manualOpenLeftWing() {
+	leftWingMotor.move(100);
+}
+
+void manualOpenRightWing() {
+	rightWingMotor.move(100);
+}
+
 void manualOpenWings() {
-	wingMotor.move(100);
+	manualOpenLeftWing();
+	manualOpenRightWing();
 }
 
 // Move Motor Directly (would be used for testing)
+void manualCloseLeftWing() {
+	leftWingMotor.move(-100);
+}
+
+void manualCloseRightWing() {
+	rightWingMotor.move(-100);
+}
+
 void manualCloseWings() {
-	wingMotor.move(-100);
+	manualCloseLeftWing();
+	manualCloseRightWing();
 }
 
 // Stop Wing Movement
-void stopWings() {
-	wingMotor.brake();
+
+void stopLeftWing() {
+	leftWingMotor.brake();
 }
+
+void stopRightWing() {
+	rightWingMotor.brake();
+}
+
+void stopWings() {
+	stopLeftWing();
+	stopRightWing();
+}
+
+
+
+
+
+// Brake the motors if they are trying to come in with too high of a current (aka if they caught a triball)
+void currentLock() {
+	if ((leftWingMotor.get_current_draw() > 2500) && (leftWingMotor.get_direction() == -1)) {
+		leftWingMotor.brake();
+	}
+	if ((rightWingMotor.get_current_draw() > 2500) && (rightWingMotor.get_direction() == -1)) {
+		rightWingMotor.brake();
+	}
+
+
+}
+

@@ -2,7 +2,16 @@
 #include <iostream>
 using namespace std;
 
-void drivetrainPeriodic() {
+void drivetrainInitialize() {
+    fLDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    mLDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    bLDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    fRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    mRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    bRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+}
+
+void drivetrainPeriodic(bool override) {
     int y1 = 0;
     int x2 = 0;
 
@@ -13,19 +22,35 @@ void drivetrainPeriodic() {
     // if(abs(x2) < 10) 
     //     x2 = 0;
 
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-        //get joysticks for arcade
-        y1 = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        x2 = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+    if (override) {
+        if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+            //get joysticks for arcade
+            y1 = coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+            x2 = coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+        }
+        else{
+            y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
+            x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * .5);
+        }
+        tankDrive(y1, x2);
     }
-    else{
-        y1 = (controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
-        x2 = (controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .5);
+    else {
+        if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+            //get joysticks for arcade
+            y1 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+            x2 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        }
+        else{
+            y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
+            x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .5);
+        }
+        arcadeDrive(y1, -x2);
     }
+
     pros::lcd::set_text(0, "Drivetrain Encoder: " + to_string(fLDrive.get_position()));
 
     //arcade drive
-    arcadeDrive(y1, -x2);
+
 
 }
 
@@ -126,6 +151,14 @@ void rotateToHeadingVoltage(int angle) {
     leftDrive.move(0);
 	rightDrive.move(0);
 
+}
+
+void killSwitch() {
+	leftDrive.brake();
+	rightDrive.brake();
+	leftWingMotor.brake();
+	rightWingMotor.brake();
+	climb.brake();
 }
 
 

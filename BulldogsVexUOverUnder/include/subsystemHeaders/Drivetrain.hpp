@@ -1,6 +1,8 @@
 #include "main.h"
 
-void drivetrainPeriodic();
+void drivetrainInitialize();
+
+void drivetrainPeriodic(bool override);
 
 void tankDrive(int left, int right);
 
@@ -13,3 +15,5 @@ void driveStraightDistance(int distance);
 void rotateToHeading(int angle);
  
 void rotateToHeadingVoltage(int angle);
+
+void killSwitch();

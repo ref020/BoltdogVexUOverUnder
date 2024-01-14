@@ -16,7 +16,8 @@ CONSTANTS
 /*
 CONTROLLER
 */
-    extern pros::Controller controller;
+    extern pros::Controller driverController;
+    extern pros::Controller coachController;
 
 /*
 MOTORS
@@ -42,7 +43,8 @@ MOTORS
         extern pros::Motor catMotor;
 
     //Wings
-        extern pros::Motor wingMotor;
+        extern pros::Motor leftWingMotor;
+        extern pros::Motor rightWingMotor;
 
     //Climber
         extern pros::Motor leftClimbMotor;

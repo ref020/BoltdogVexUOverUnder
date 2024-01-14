@@ -2,6 +2,8 @@
 #include <iostream>
 using namespace std;
 
+bool override = false;
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -27,9 +29,9 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	wingMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-
-
+	drivetrainInitialize();
+	wingsInitialize();
+	climberInitialize();
 	pros::lcd::register_btn1_cb(on_center_button);
 }
 
@@ -79,10 +81,20 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
-		drivetrainPeriodic();
-		// wingsPeriodic();
-		// catapultPeriodic();
+		if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_L2) &&
+			coachController.get_digital(pros::E_CONTROLLER_DIGITAL_R2) &&
+			coachController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+				override = !override;
+			}
+		
+			drivetrainPeriodic(override);
+			wingsPeriodic(override);
+			climberPeriodic(override);
+
 		pros::delay(10);
 	}
 	// pros::delay(20);
 }
+
+
+
