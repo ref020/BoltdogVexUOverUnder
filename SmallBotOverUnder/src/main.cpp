@@ -13,8 +13,6 @@ pros::Motor rightLift(6);
 pros::Motor_Group lift({leftLift, rightLift});
 pros::Motor intake(1, true);
 pros::ADIDigitalIn limitSwitch (8);
-pros::ADIDigitalIn sonarIN (std::uint8_t F);
-pros::ADIDigitalIn sonarOut (std::uint8_t G);
 
 /*
 Subroutines:
@@ -27,8 +25,21 @@ The following subroutines are used:
 
 void movement() {
 
-	left.move(master.get_analog(ANALOG_LEFT_Y)*-1);
-	right.move(master.get_analog(ANALOG_RIGHT_Y)*-1);
+	int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+	
+	int leftP = power + turn;
+	int rightP = power - turn;
+
+	int mx = std::max(std::abs(leftP), std::abs(rightP));
+
+	if (mx > 127){
+		leftP = (leftP / mx) * 127;
+		rightP = (rightP / mx) * 127;
+	}
+
+	left = leftP;
+	right = rightP;
 }
 
 void primeCatapult() {
@@ -41,9 +52,10 @@ void primeCatapult() {
 
 void launchTriball() {
 
-	cata.move(100);
-	pros::delay(20);
-	primeCatapult();
+		cata.move(100);
+		pros::delay(20);
+		primeCatapult();
+	
 }
 
 
@@ -127,7 +139,7 @@ void opcontrol() {
 
 	while (true) {
 
-		//Tank control code
+		//Split Arcade control code
 		movement();
         
 		//Catapult code
@@ -135,7 +147,8 @@ void opcontrol() {
 		
         if (master.get_digital(DIGITAL_R1)) {
 
-        	launchTriball(); 
+        	launchTriball();
+			movement(); 
 			
 		} else {
 		
@@ -173,10 +186,12 @@ void opcontrol() {
 		if (master.get_digital(DIGITAL_L1)) {
 
 			intake.move_velocity(100);
+			movement();
 		
 		} else if (master.get_digital(DIGITAL_L2)){
 
 			intake.move_velocity(-100);
+			movement();
 
 		} else{
 
