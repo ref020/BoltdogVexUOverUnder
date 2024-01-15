@@ -24,7 +24,6 @@ The following subroutines are used:
 */
 
 void movement() {
-
 	int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 	
@@ -33,13 +32,13 @@ void movement() {
 
 	int mx = std::max(std::abs(leftP), std::abs(rightP));
 
-	if (mx > 127){
+	if(mx > 127){
 		leftP = (leftP / mx) * 127;
 		rightP = (rightP / mx) * 127;
 	}
 
-	left = leftP;
-	right = rightP;
+	leftMG = leftP;
+	rightMG = rightP;
 }
 
 void primeCatapult() {
