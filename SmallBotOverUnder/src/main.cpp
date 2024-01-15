@@ -1,17 +1,20 @@
 #include "main.h"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::Motor frontLeft(1);
-pros::Motor frontRight(2, true);
-pros::Motor cata(3);
-pros::Motor backLeft(9);
-pros::Motor backRight(10, true);
+pros::Motor frontLeft(19);
+pros::Motor frontRight(12, true);
+pros::Motor cata(18);
+pros::Motor backLeft(20);
+pros::Motor backRight(11, true);
 pros::Motor_Group left({frontLeft, backLeft});
 pros::Motor_Group right({frontRight, backRight});
-pros::Motor leftLift(20, true);
-pros::Motor rightLift(11);
+pros::Motor leftLift(5, true);
+pros::Motor rightLift(6);
 pros::Motor_Group lift({leftLift, rightLift});
-
+pros::Motor intake(1, true);
+pros::ADIDigitalIn limitSwitch (8);
+pros::ADIDigitalIn sonarIN (std::uint8_t F);
+pros::ADIDigitalIn sonarOut (std::uint8_t G);
 
 /*
 Subroutines:
@@ -21,41 +24,25 @@ The following subroutines are used:
 -launch triball
 -prime catapult
 */
+
 void movement() {
 
-	left.move(master.get_analog(ANALOG_LEFT_Y));
-	right.move(master.get_analog(ANALOG_RIGHT_Y));
+	left.move(master.get_analog(ANALOG_LEFT_Y)*-1);
+	right.move(master.get_analog(ANALOG_RIGHT_Y)*-1);
 }
 
 void primeCatapult() {
 
-	cata.move(50);
-
-	while (cata.get_actual_velocity() >= 0.3) {
-
-		movement();
-		pros::delay(2);
-
+	while (limitSwitch.get_value() == 0){
+		cata.move(50);
 	}
 
-	cata.brake();
-
-	cata.tare_position();
 }
 
 void launchTriball() {
 
-	cata.move(-100);
-
-	while (!(cata.get_position() <= 85)) { // Wait for motor to reach max position
-
-		movement();
-		pros::delay(2);
-		
-	} 
-
-	cata.brake();
-	
+	cata.move(100);
+	pros::delay(20);
 	primeCatapult();
 }
 
@@ -145,7 +132,7 @@ void opcontrol() {
         
 		//Catapult code
 		//R1 = Fire Cata
-		//R2 = Prime Cata
+		
         if (master.get_digital(DIGITAL_R1)) {
 
         	launchTriball(); 
@@ -158,15 +145,15 @@ void opcontrol() {
 		}
 		
 		//Lift Controls
-		//L1 = Raise Lift Arm
-		//L2 = Lower Lift Arm/Raise Robot
-		if (master.get_digital(DIGITAL_L1)) {
+		//UP = Raise Lift Arm
+		//DOWN = Lower Lift Arm/Raise Robot
+		if (master.get_digital(DIGITAL_UP)) {
 
 			lift.move_velocity(100);
 
 			movement();
 
-		} else if (master.get_digital(DIGITAL_L2)) {
+		} else if (master.get_digital(DIGITAL_DOWN)) {
 
 			lift.move_velocity(-100);
 
@@ -177,6 +164,25 @@ void opcontrol() {
 			lift.set_brake_modes(pros::E_MOTOR_BRAKE_HOLD);
 			lift.brake();
 			
+		}
+
+
+		//Intake code
+		//L1 = Intake
+		//L2 = Output
+		if (master.get_digital(DIGITAL_L1)) {
+
+			intake.move_velocity(100);
+		
+		} else if (master.get_digital(DIGITAL_L2)){
+
+			intake.move_velocity(-100);
+
+		} else{
+
+			intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+			intake.brake();
+
 		}
 		pros::delay(20);
 	}
