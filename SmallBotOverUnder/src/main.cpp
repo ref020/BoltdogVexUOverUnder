@@ -13,6 +13,9 @@ pros::Motor rightLift(6);
 pros::Motor_Group lift({leftLift, rightLift});
 pros::Motor intake(1, true);
 pros::ADIDigitalIn limitSwitch (8);
+static bool skills = false;
+static bool red = false;
+static bool blue = false;
 
 /*
 Subroutines:
@@ -37,16 +40,64 @@ void movement() {
 		rightP = (rightP / mx) * 127;
 	}
 
-	leftMG = leftP;
-	rightMG = rightP;
+	left = leftP;
+	right = rightP;
 }
 
 void primeCatapult() {
 
 	while (limitSwitch.get_value() == 0){
 		cata.move(50);
+
+		//copy of drive controls, allowing for motion and operation of other subsystems
+
+		movement(); 
+
+		//Lift Controls
+		//UP = Raise Lift Arm
+		//DOWN = Lower Lift Arm/Raise Robot
+		if (master.get_digital(DIGITAL_UP)) {
+
+			lift.move_velocity(100);
+
+			movement();
+
+		} else if (master.get_digital(DIGITAL_DOWN)) {
+
+			lift.move_velocity(-100);
+
+			movement();
+
+		} else {
+
+			lift.set_brake_modes(pros::E_MOTOR_BRAKE_HOLD);
+			lift.brake();
+			
+		}
+
+
+		//Intake code
+		//L1 = Intake
+		//L2 = Output
+		if (master.get_digital(DIGITAL_L1)) {
+
+			intake.move_velocity(100);
+			movement();
+		
+		} else if (master.get_digital(DIGITAL_L2)){
+
+			intake.move_velocity(-100);
+			movement();
+
+		} else{
+
+			intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+			intake.brake();
+
+		}
 	}
 
+	
 }
 
 void launchTriball() {
@@ -68,12 +119,41 @@ void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
+		pros::lcd::set_text(2, "Skills Run");
+		skills = true;
 	} else {
 		pros::lcd::clear_line(2);
+		skills = false;
 	}
 }
 
+void on_right_button() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(3, "red auton selected");
+		red = true;
+		blue = false;
+	} else {
+		pros::lcd::set_text(3, "blue auton selected");
+		blue = true;
+		red = false;
+	}
+}
+
+void on_left_button() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(3, "blue auton selected");
+		blue = true;
+		red = false;
+	} else {
+		pros::lcd::set_text(3, "red auton selected");
+		red = true;
+		blue = false;
+	}
+}
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -82,9 +162,11 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+	pros::lcd::set_text(1, "Running Match Code");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::register_btn0_cb(on_right_button);
+	pros::lcd::register_btn2_cb(on_left_button);
 }
 
 /**
@@ -103,7 +185,13 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+	pros::lcd::set_text(1, "Running Match Code");
+
+	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::register_btn0_cb(on_right_button);
+	pros::lcd::register_btn2_cb(on_left_button);
+	}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -116,7 +204,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
