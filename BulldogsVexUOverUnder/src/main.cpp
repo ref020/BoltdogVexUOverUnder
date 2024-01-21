@@ -32,7 +32,7 @@ void initialize() {
 	drivetrainInitialize();
 	wingsInitialize();
 	climberInitialize();
-	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::register_btn1_cb(on_center_button);	
 }
 
 /**
@@ -64,7 +64,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	matchQualsAuto();
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -90,6 +93,12 @@ void opcontrol() {
 			drivetrainPeriodic(override);
 			wingsPeriodic(override);
 			climberPeriodic(override);
+			kickerPeriodic(override);
+
+		if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+			autonomous();
+		}
+		
 
 		pros::delay(10);
 	}

@@ -10,9 +10,11 @@ void arcadeDrive(int moveValue, int rotateValue);
 
 void evenBotWithBeam();
 
-void driveStraightDistance(int distance);
+void driveStraightDistance(int distance, int speed);
 
-void rotateToHeading(int angle);
+void driveStraightDistanceVoltage(int distance);
+
+void rotateToHeading(int angle, int speed);
  
 void rotateToHeadingVoltage(int angle);
 

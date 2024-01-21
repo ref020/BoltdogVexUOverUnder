@@ -40,7 +40,7 @@ MOTORS
 
 
     //Shooter
-        extern pros::Motor catMotor;
+        extern pros::Motor kickerMotor;
 
     //Wings
         extern pros::Motor leftWingMotor;

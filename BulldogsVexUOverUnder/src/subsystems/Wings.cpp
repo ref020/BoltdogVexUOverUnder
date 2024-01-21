@@ -59,17 +59,17 @@ void wingsPeriodic(bool override) {
 }
 
 // Position-Controlled Wings
-void flipWings(int position) {
-	flipLeftWing(position);
-	flipRightWing(position);
+void flipWings(int position, int speed) {
+	flipLeftWing(position, speed);
+	flipRightWing(position, speed);
 }
 
-void flipLeftWing(int position) {
-	leftWingMotor.move_absolute(position, 600);
+void flipLeftWing(int position, int speed) {
+	leftWingMotor.move_absolute(position, speed);
 }
 
-void flipRightWing(int position) {
-	rightWingMotor.move_absolute(position, 600);
+void flipRightWing(int position, int speed) {
+	rightWingMotor.move_absolute(position, speed);
 }
 
 

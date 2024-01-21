@@ -27,11 +27,11 @@ void climberToPosition(int position) {
 }
 
 void manualRaiseClimber() {
-    climb.move(50);
+    climb.move(75);
 }
 
 void manualLowerClimber() {
-    climb.move(-50);
+    climb.move(-75);
 }
 
 void stopClimber() {

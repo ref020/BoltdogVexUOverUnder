@@ -32,10 +32,10 @@ void drivetrainPeriodic(bool override) {
             y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
             x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * .5);
         }
-        tankDrive(y1, x2);
+        tankDrive(x2, y1);
     }
     else {
-        if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+        if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
             //get joysticks for arcade
             y1 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
             x2 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
@@ -44,10 +44,12 @@ void drivetrainPeriodic(bool override) {
             y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
             x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .5);
         }
-        arcadeDrive(y1, -x2);
+        arcadeDrive(y1, x2);
     }
 
-    pros::lcd::set_text(0, "Drivetrain Encoder: " + to_string(fLDrive.get_position()));
+    pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(fLDrive.get_position()));
+    pros::lcd::set_text(6, "Drivetrain Right Encoder: " + to_string(fRDrive.get_position()));
+
 
     //arcade drive
 
@@ -99,7 +101,7 @@ void evenBotWithBeam() {
 
 
 
-void driveStraightDistance(int distance) {
+void driveStraightDistanceVoltage(int distance) {
 	int kP = .1;
 	int error = distance - fLDrive.get_position();
 
@@ -114,19 +116,44 @@ void driveStraightDistance(int distance) {
 	rightDrive.move(0);
 }
 
+void driveStraightDistance(int distance, int speed) {
+    double targetDistanceLeft = fLDrive.get_position() + distance;
+    double targetDistanceRight = fRDrive.get_position() + distance;
+
+    // leftDrive.move_absolute(targetDistanceLeft, speed);
+    // rightDrive.move_absolute(targetDistanceRight, speed);
+
+    leftDrive.move_relative(distance, speed);
+    rightDrive.move_relative(distance, speed);
+
+    while (abs(abs(targetDistanceLeft) - abs(fLDrive.get_position())) > 20) {
+    }
+
+    tankDrive(0, 0);
+    pros::delay(200);
+}
+
 // Target angle is relative to the robot's current heading, so a 90 will mean the robot will turn 90 degrees
-void rotateToHeading(int angle) {
+void rotateToHeading(int angle, int speed) {
     // the distance the motor needs to travel in order to reach the desired rotation
-    int distance = oneRotationEncoderCount * (angle / 360);
+    double distance = oneRotationEncoderCount * ((angle - 5) / 360.0);
 
     // the actual target encoder value for the leftDrive
-    int targetDistanceLeft = fLDrive.get_position() + distance;
-    int targetDistanceRight = fRDrive.get_position() - distance;
+    double targetDistanceLeft = fLDrive.get_position() + distance;
+    double targetDistanceRight = fRDrive.get_position() - distance;
 
     // set the motors to move to the target positions. (This will move and stop the motors on its own [apparently])
-    leftDrive.move_absolute(targetDistanceLeft, 1000);
-    rightDrive.move_absolute(targetDistanceRight, 1000);
+    leftDrive.move_absolute(targetDistanceLeft, speed);
+    rightDrive.move_absolute(targetDistanceRight, speed);
+
+    while (abs(abs(targetDistanceLeft) - abs(fLDrive.get_position())) > 50) {
+    }
+
+    
+    pros::delay(200);
 }
+
+
 
 // Same goal as the previous method but uses voltage control and a p-controller
 // to move the drivebase, instead of the built in position controllers
@@ -134,7 +161,7 @@ void rotateToHeadingVoltage(int angle) {
     int kP = 10;
 
     // the distance the motor needs to travel in order to reach the desired rotation
-    int distance = oneRotationEncoderCount * (angle / 360);
+    int distance = oneRotationEncoderCount * ((angle - 5) / 360);
 
     // the actual target encoder value
     int targetDistance = fLDrive.get_position() + distance;
