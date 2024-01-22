@@ -23,6 +23,38 @@ void matchElimsAuto() {
 	rotateToHeading(-60, 255);
 }
 
+void skillsAuto() {
+	// flipRightWing(210, 600);	
+	// driveStraightDistance(2800, 255);
+	// flipRightWing(160, 600);	
+	// spinKicker();
+	// driveStraightDistance(600, 100);
+	// driveStraightDistance(100, 200);
+	// flipRightWing(150, 100);
+	// driveStraightDistance(300, 100);
+	// driveStraightDistance(100, 200);
+
+	// tankDrive(50, 0);
+	// pros::delay(300);
+	// tankDrive(0, 0);
+	for (int i = 0; i <= 2; i++) {
+		flipLeftWing(400, 600);	
+		pros::delay(300);
+		flipLeftWing(40, 600);	
+		pros::delay(800);
+	}
+
+	rotateToHeading(100, 255);
+	driveStraightDistance(800, 255);
+	rotateToHeading(45, 255);
+	driveStraightDistance(2800, 500);
+	driveStraightDistance(-2500, 500);
+	rotateToHeading(-90, 255);
+	driveStraightDistance(1000, 300);
+	rotateToHeading(90, 255);
+
+}
+
 void scoreFirstThreeTriballs() {
 	driveStraightDistance(2800, 255);
 	spinKicker();

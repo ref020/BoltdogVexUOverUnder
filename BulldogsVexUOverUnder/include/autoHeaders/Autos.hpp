@@ -4,4 +4,6 @@ void matchElimsAuto();
 
 void matchQualsAuto();
 
+void skillsAuto();
+
 void scoreFirstThreeTriballs();

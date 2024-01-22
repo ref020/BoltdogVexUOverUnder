@@ -2,6 +2,8 @@
 #include <iostream>
 using namespace std;
 
+
+
 bool override = false;
 
 /**
@@ -65,7 +67,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	matchQualsAuto();
+	skillsAuto();
 
 }
 
@@ -95,7 +97,7 @@ void opcontrol() {
 			climberPeriodic(override);
 			kickerPeriodic(override);
 
-		if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
 			autonomous();
 		}
 		
