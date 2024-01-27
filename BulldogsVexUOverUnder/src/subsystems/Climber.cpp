@@ -18,6 +18,18 @@ void climberPeriodic(bool override) {
         stopClimber();
     }
 
+    if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        lockClimb();
+    }
+
+    else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+        unlockClimb();
+    }
+    
+    else {
+        stopClimbLock();
+    }
+
     pros::lcd::set_text(3, "Climb Encoder: " + to_string(leftClimbMotor.get_position()));
 
 }
@@ -36,6 +48,18 @@ void manualLowerClimber() {
 
 void stopClimber() {
     climb.move(0);
+}
+
+void lockClimb() {
+    climbLock.move(50);
+}
+
+void unlockClimb() {
+    climbLock.move(-50);
+}
+
+void stopClimbLock() {
+    climbLock.move(0);
 }
 
 

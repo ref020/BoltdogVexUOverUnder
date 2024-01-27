@@ -51,3 +51,5 @@ MOTORS
         extern pros::Motor rightClimbMotor;
 
         extern pros::Motor_Group climb;
+
+        extern pros::Motor climbLock;

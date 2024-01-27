@@ -2,8 +2,11 @@
 
 void matchElimsAuto();
 
-void matchQualsAuto();
+void matchQualsThreeBallAuto();
+
+void matchQualsFiveBallAuto();
 
 void skillsAuto();
 
 void scoreFirstThreeTriballs();
+

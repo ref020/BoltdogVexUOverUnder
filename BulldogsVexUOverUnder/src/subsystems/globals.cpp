@@ -57,3 +57,4 @@ MOTORS
 
     pros::Motor_Group climb({leftClimbMotor, rightClimbMotor});
 
+    pros::Motor climbLock(18, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);

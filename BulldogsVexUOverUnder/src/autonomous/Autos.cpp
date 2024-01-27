@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-void matchQualsAuto() {
+void matchQualsThreeBallAuto() {
     scoreFirstThreeTriballs();
 	rotateToHeading(-15, 255);
 	flipLeftWing(400, 600);
@@ -14,6 +14,44 @@ void matchQualsAuto() {
 	pros::delay(500);
 }
 
+void matchQualsFiveBallAuto() {
+	scoreFirstThreeTriballs();
+	rotateToHeading(75, 255);
+	flipLeftWing(233, 600);
+	flipRightWing(233, 600);
+	driveStraightDistance(900, 255);
+	rotateToHeading(-65, 175);
+	spinKicker();
+	flipLeftWing(140, 100);
+	flipRightWing(140, 100);
+	driveStraightDistance(800, 255);
+	driveStraightDistance(300, 50);
+	driveStraightDistance(100, 255);
+	stopKicker();
+	flipLeftWing(233, 600);
+	flipRightWing(233, 600);
+	// rotateToHeading(75, 255);
+	// driveStraightDistance(400, 255);
+	// rotateToHeading(-65, 100);
+	// spinKicker();
+	// flipLeftWing(140, 100);
+	// flipRightWing(140, 100);
+	// driveStraightDistance(950, 150);
+	// driveStraightDistance(300, 50);
+	// driveStraightDistance(100, 255);
+	driveStraightDistance(-500, 255);
+	rotateToHeading(-90, 175);
+	pros::delay(2);
+	flipLeftWing(400, 600);
+	flipRightWing(400, 600);
+	// spinKicker();
+	driveStraightDistance(1500, 255);
+	flipLeftWing(150, 200);
+
+	pros::delay(100000);
+}
+
+
 void matchElimsAuto() {
     scoreFirstThreeTriballs();
 	flipLeftWing(223, 600);
@@ -21,6 +59,7 @@ void matchElimsAuto() {
 	rotateToHeading(70, 255);
 	driveStraightDistance(1500, 255);
 	rotateToHeading(-60, 255);
+
 }
 
 void skillsAuto() {
@@ -37,20 +76,26 @@ void skillsAuto() {
 	// tankDrive(50, 0);
 	// pros::delay(300);
 	// tankDrive(0, 0);
-	for (int i = 0; i <= 2; i++) {
+	flipLeftWing(150, 600);	
+	pros::delay(300);
+	flipLeftWing(40, 600);	
+
+	for (int i = 0; i <= 15; i++) {
 		flipLeftWing(400, 600);	
 		pros::delay(300);
 		flipLeftWing(40, 600);	
-		pros::delay(800);
+		pros::delay(1200);
 	}
 
 	rotateToHeading(100, 255);
 	driveStraightDistance(800, 255);
 	rotateToHeading(45, 255);
-	driveStraightDistance(2800, 500);
-	driveStraightDistance(-2500, 500);
+	driveStraightDistance(3200, 500);
+	driveStraightDistance(-1000, 500);
+	driveStraightDistance(2000, 500);
+	driveStraightDistance(-1000, 500);
 	rotateToHeading(-90, 255);
-	driveStraightDistance(1000, 300);
+	driveStraightDistance(-1000, 300);
 	rotateToHeading(90, 255);
 
 }

@@ -11,3 +11,9 @@ void manualRaiseClimber();
 void manualLowerClimber();
 
 void stopClimber();
+
+void lockClimb();
+
+void unlockClimb();
+
+void stopClimbLock();
