@@ -29,8 +29,10 @@ pros::ADIUltrasonic ultrasonic('E', 'F');
 
 // Globals
 static bool skills = false;
+static bool elim = false;
+static bool qual = true;
 static bool red = false;
-static bool blue = false;
+static bool blue = true;
 
 
 // User Drive Function
@@ -83,7 +85,7 @@ void rotateToHeading(int angle, int speed) {
 
 // Checks to see if a triball is loaded
 bool triballLoaded() {
-    return ultrasonic.get_value() < 50;
+    return ultrasonic.get_value() < 100;
 }
 
 // Makes sure the catapult is in the proper position to fire
@@ -110,7 +112,7 @@ void primeCatapult() {
 // Fires the triball
 void launchTriball() {
 	catapult.move(100);
-	pros::delay(200);
+	pros::delay(300);
 	primeCatapult();
 }
 
@@ -123,46 +125,234 @@ void launchTriballNoPrime() {
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
+ * "Skills Run" and "Match Auton"
  */
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
+
 	if (pressed) {
+
 		pros::lcd::set_text(2, "Skills Run");
 		skills = true;
+		elim = false;
+		qual = false;
+
 	} else {
-		pros::lcd::clear_line(2);
+
+		pros::lcd::set_text(2, "Match Auton");
 		skills = false;
+
 	}
 }
+
+/**
+ * A callback function for LLEMU's right button.
+ *
+ * When this callback is fired, it will toggle line 2 of the LCD text between
+ * "Elimination rounds auton selected" and "Qualification rounds auton selected"
+ */
 
 void on_right_button() {
 	static bool pressed = false;
 	pressed = !pressed;
+
 	if (pressed) {
-		pros::lcd::set_text(3, "red auton selected");
-		red = true;
-		blue = false;
+
+		pros::lcd::set_text(3, "Elimination rounds auton selected");
+		elim = true;
+		qual = false;
+
 	} else {
-		pros::lcd::set_text(3, "blue auton selected");
-		blue = true;
-		red = false;
+
+		pros::lcd::set_text(3, "Qualification rounds auton selected");
+		qual = true;
+		elim = false;
+
 	}
 }
+
+/**
+ * A callback function for LLEMU's right button.
+ *
+ * When this callback is fired, it will toggle line 2 of the LCD text between
+ * "Elimination rounds auton selected" and "Qualification rounds auton selected"
+ */
 
 void on_left_button() {
 	static bool pressed = false;
 	pressed = !pressed;
+
 	if (pressed) {
-		pros::lcd::set_text(3, "blue auton selected");
+
+		pros::lcd::set_text(4, "Red side is selected");
 		blue = true;
 		red = false;
+
 	} else {
-		pros::lcd::set_text(3, "red auton selected");
+
+		pros::lcd::set_text(4, "Blue side is selected");
 		red = true;
 		blue = false;
+
 	}
+}
+
+void score2TriBalls(){
+	//move lift to deploy
+	lift.move(127);
+	pros::delay(300);
+	lift.move(0);
+	//rotate to shoot
+	rotateToHeading(-55, 100);
+	//shoot
+	launchTriball();
+	//rotate to drive
+	rotateToHeading(230, 200);
+	//set lift and intake to get ball under bar
+	intake.move(40);
+	lift.move(-127);
+	pros::delay(50);
+	lift.move(0);
+	//drive under bar
+	moveDistance(-4200, 300);
+	//hold the ball while turning
+	lift.move(-127);
+	pros::delay(50);
+	lift.move(0);
+	//go to goal
+	rotateToHeading(-45, 100);
+	intake.move(0);
+	moveDistance(-1300, 300);
+	rotateToHeading(-25, 100);
+	moveDistance(300, 250);
+	intake.move(-50);
+	pros::delay(200);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0);
+	moveDistance(400, 300);
+	lift.move(-90);
+	pros::delay(600);
+	lift.move(0);
+	moveDistance(-900, 300);
+	moveDistance(850, 300);
+	intake.move(0);
+	lift.move(90);
+	pros::delay(550);
+	lift.move(0);
+	rotateToHeading(130, 300);
+	launchTriballNoPrime();
+	catapult.move(0);
+	intake.move(127);
+	moveDistance(-500, 200);
+	lift.move(-90);
+	pros::delay(350);
+	lift.move(0);
+	pros::delay(200);
+	moveDistance(400, 200);
+	moveDistance(300, 200);
+	rotateToHeading(-110, 200);
+	moveDistance(-200, 200);
+	intake.move(-127);
+	lift.move(90);
+	pros::delay(450);
+	lift.move(0);
+	intake.move(-40);
+	moveDistance(900, 250);
+	lift.move(-90);
+	pros::delay(400);
+	lift.move(0);
+	moveDistance(-1200, 300);
+}
+
+void finalPartQuals(){
+	moveDistance(1300, 300);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0);
+	intake.move(0);
+	rotateToHeading(65, 300);
+	moveDistance(7000, 400);
+	moveDistance(-400, 300);
+	lift.move(90);
+	pros::delay(400);
+	lift.move(0);
+	rotateToHeading(-180, 300);
+	moveDistance(-500, 300);
+	intake.move(127);
+	lift.move(-90);
+	pros::delay(350);
+	lift.move(0);
+	pros::delay(200);
+	moveDistance(400, 200);
+	rotateToHeading(120, 300);
+	moveDistance(-300, 300);
+	intake.move(-90);
+	lift.move(90);
+	pros::delay(450);
+	lift.move(0);
+	moveDistance(500, 300);
+	lift.move(-90);
+	pros::delay(400);
+	lift.move(0);
+	moveDistance(-1000, 300);
+	moveDistance(1200, 300);
+	intake.move(0);
+	lift.move(90);
+	pros::delay(400);
+	lift.move(0);
+	rotateToHeading(-50, 300);
+	moveDistance(3200, 300);
+}
+
+void finalPartElims(){
+	moveDistance(900, 300);
+	rotateToHeading(-40, 300);
+	intake.move(127);
+	lift.move(90);
+	pros::delay(250);
+	lift.move(0);
+
+	moveDistance(-2700, 400);
+	pros::delay(200);
+	moveDistance(500, 400);
+	rotateToHeading(100, 200);
+
+	intake.move(-50);
+	pros::delay(200);
+	lift.move(90);
+	pros::delay(250);
+	lift.move(0);
+	moveDistance(600, 300);
+	lift.move(-90);
+	pros::delay(250);
+	lift.move(0);
+	moveDistance(-800, 300);
+
+	moveDistance(800, 300);
+	rotateToHeading(-170, 300);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0);
+	intake.move(100);
+	moveDistance(-800, 300);
+	lift.move(90);
+	pros::delay(200);
+	lift.move(0);
+	moveDistance(300, 300);
+	rotateToHeading(170, 300);
+	moveDistance(-700, 300);
+	intake.move(0);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0);
+	moveDistance(500, 300);
+	lift.move(-90);
+	pros::delay(300);
+	lift.move(0);
+	moveDistance(-400, 300);
+	
 }
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -172,7 +362,8 @@ void on_left_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Running Match Code");
+	pros::lcd::set_text(1, "TECHI3 Ruff and Ready");
+	
 
 	pros::lcd::register_btn1_cb(on_center_button);
 	pros::lcd::register_btn0_cb(on_right_button);
@@ -204,7 +395,7 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
-	pros::lcd::set_text(1, "Running Match Code");
+	pros::lcd::set_text(1, "TECHI3 Ruff and Ready");
 
 	pros::lcd::register_btn1_cb(on_center_button);
 	pros::lcd::register_btn0_cb(on_right_button);
@@ -223,68 +414,28 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	lift.move(127);
-	pros::delay(300);
-	lift.move(0);
-	rotateToHeading(-55, 100);
-	launchTriballNoPrime();
-	primeCatapult();
-	rotateToHeading(230, 200);
-	intake.move(40);
-	lift.move(-127);
-	pros::delay(50);
-	lift.move(0);
-	moveDistance(-4200, 300);
-	lift.move(-127);
-	pros::delay(50);
-	lift.move(0);
-	rotateToHeading(-45, 100);
-	moveDistance(-1400, 300);
-	rotateToHeading(-45, 100);
-	// lift.move(127);
-	// pros::delay(300);
-	// lift.move(0);
-	intake.move(-127);
-	moveDistance(400, 300);
-	lift.move(-127);
-	pros::delay(1000);
-	lift.move(0);
-	moveDistance(-500, 600);
-	moveDistance(500, 300);
-	intake.move(0);
-	lift.move(127);
-	pros::delay(500);
-	lift.move(0);
-	rotateToHeading(-135, 200);
-	moveDistance(-500, 200);
-	rotateToHeading(-90, 200);
-	moveDistance(-300, 200);
-	intake.move(70);
-	lift.move(-127);
-	moveDistance(-300, 200);
-	pros::delay(200);
-	lift.move(0);
-	moveDistance(600, 200);
-	intake.move(0);
-	rotateToHeading(-90, 200);
-	moveDistance(-600, 200);
-	rotateToHeading(-40, 200);
-	lift.move(127);
-	pros::delay(500);
-	lift.move(0);
-	moveDistance(-200, 200);
-	moveDistance(500, 200);
-	lift.move(-127);
-	pros::delay(500);
-	lift.move(0);
-	moveDistance(-700, 400);
-	moveDistance(500, 200);
-	rotateToHeading(-135, 250);
-	moveDistance(-1200, 250);
-	rotateToHeading(55, 250);
-	moveDistance(-4000, 250);
+	if (elim = true) {
 
+		score2TriBalls();
+		finalPartElims();
+
+	} else if (qual = true) {
+
+		score2TriBalls();
+		finalPartQuals();
+
+	} else if (skills = true) {
+
+	//skillsAuton()
+
+	} else {
+
+		pros::lcd::set_text(4, "Ruh-Roh Raggy, We forgot to select the auton!!");
+		
+	}
+	// primeCatapult();
 }
+
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -306,7 +457,7 @@ void opcontrol() {
 	leftLiftMotor.tare_position();
 
 	while (true) {
-		if (master.get_digital(DIGITAL_A)) {
+		if (master.get_digital(DIGITAL_X)) {
 			autonomous();
 		}
 		
@@ -324,7 +475,7 @@ void opcontrol() {
 		}
 
 		// This block lifts the lift and intake up and down
-		if (master.get_digital(DIGITAL_UP)) {
+		if (master.get_digital(DIGITAL_L1)) {
 			if (liftPos < 2 || master.get_digital(DIGITAL_B)) {
 				lift.move(127);
 			}
@@ -332,9 +483,10 @@ void opcontrol() {
 				lift.move(0);
 			}
 		}
-		else if (master.get_digital(DIGITAL_DOWN)) {
+		else if (master.get_digital(DIGITAL_L2)) {
 			if (liftPos > 0) {
 				lift.move(-127);
+				intake.move(127);
 			}
 			else {
 				lift.move(0);
@@ -342,18 +494,21 @@ void opcontrol() {
 		}
 		else {
 			lift.move(0);
+			intake.move(0);
 		}
 
 		// This block operates the intake motors
-		if (master.get_digital(DIGITAL_L1)) {
+		if (master.get_digital(DIGITAL_UP)) {
 			intake.move(127);
 		}
-		else if (master.get_digital(DIGITAL_L2)) {
+		else if (master.get_digital(DIGITAL_DOWN)) {
 			intake.move(-127);
 		}
-		else {
-			intake.move(0);
+
+		if (master.get_digital_new_press(DIGITAL_A)){
+			primeCatapult();
 		}
+
 
 
 

@@ -223,13 +223,19 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+	//lift up dor shooting
 	lift.move(127);
 	pros::delay(300);
 	lift.move(0);
+	//rotate to fire onto opponent side
 	rotateToHeading(-55, 100);
-	launchTriballNoPrime();
-	primeCatapult();
+	//shoot and reset
+	// launchTriballNoPrime();
+	// primeCatapult();
+	launchTriball();
+	//spin to drive to other side
 	rotateToHeading(230, 200);
+	//start intake wheels
 	intake.move(40);
 	lift.move(-127);
 	pros::delay(50);
@@ -301,13 +307,14 @@ void autonomous() {
  */
 
 void opcontrol() {
+
 	float liftPos;
 	primeCatapult();
 	leftLiftMotor.tare_position();
 
 	while (true) {
 		if (master.get_digital(DIGITAL_A)) {
-			autonomous();
+			lift.move_absolute(.642222222222, 200);
 		}
 		
 		pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(frontLeftMotor.get_position()));
@@ -324,7 +331,7 @@ void opcontrol() {
 		}
 
 		// This block lifts the lift and intake up and down
-		if (master.get_digital(DIGITAL_UP)) {
+		if (master.get_digital(DIGITAL_L1)) {
 			if (liftPos < 2 || master.get_digital(DIGITAL_B)) {
 				lift.move(127);
 			}
@@ -332,9 +339,10 @@ void opcontrol() {
 				lift.move(0);
 			}
 		}
-		else if (master.get_digital(DIGITAL_DOWN)) {
+		else if (master.get_digital(DIGITAL_L2)) {
 			if (liftPos > 0) {
 				lift.move(-127);
+				intake.move(127);
 			}
 			else {
 				lift.move(0);
@@ -344,18 +352,17 @@ void opcontrol() {
 			lift.move(0);
 		}
 
-		// This block operates the intake motors
-		if (master.get_digital(DIGITAL_L1)) {
+		if (master.get_digital(DIGITAL_UP)){
 			intake.move(127);
-		}
-		else if (master.get_digital(DIGITAL_L2)) {
+		} else if (master.get_digital(DIGITAL_DOWN)){
 			intake.move(-127);
-		}
-		else {
+		} else {
 			intake.move(0);
 		}
 
-
+		if (master.get_digital(DIGITAL_X)){
+			autonomous();
+		}
 
 		pros::delay(20);
 	}
