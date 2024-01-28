@@ -3,8 +3,11 @@
 using namespace std;
 
 
-
 bool override = false;
+
+bool isSkills = false;
+bool isQuals = true;
+bool isElims = false;
 
 /**
  * A callback function for LLEMU's center button.
@@ -13,14 +16,24 @@ bool override = false;
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	}
-	else {
-		pros::lcd::clear_line(2);
-	}
+	pros::lcd::set_text(2, "Skills Run");
+	isSkills = true;
+	isElims = false;
+	isQuals = false;	
+}
+
+void on_left_button() {
+	pros::lcd::set_text(2, "Elims Run");
+	isSkills = false;
+	isElims = true;
+	isQuals = false;	
+}
+
+void on_right_button() {
+	pros::lcd::set_text(2, "Quals Run");
+	isSkills = false;
+	isElims = false;
+	isQuals = true;	
 }
 
 /**
@@ -67,8 +80,18 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	matchQualsFiveBallAuto();
-
+	if (isQuals) {
+		matchQualsThreeBallAuto();
+	}
+	else if (isElims) {
+		matchElimsAuto();
+	}
+	else if (isSkills) {
+		skillsAuto();
+	}
+	else {
+		// D:
+	}
 }
 
 /**
