@@ -95,7 +95,7 @@ void primeCatapult() {
 	int lineTrackerVal;
 	lineTrackerVal = lineTracker.get_value();
 	if (lineTrackerVal > 300) {
-		catapult.move(100);
+		catapult.move(127);
 		while(lineTrackerVal > 300) {
 			drive();
 			lineTrackerVal = lineTracker.get_value();
@@ -230,6 +230,8 @@ void score2TriBalls(){
 	moveDistance(-1300, 300);
 	rotateToHeading(-25, 100);
 	moveDistance(300, 250);
+
+	// score first triball
 	intake.move(-50);
 	pros::delay(200);
 	lift.move(90);
@@ -245,6 +247,8 @@ void score2TriBalls(){
 	lift.move(90);
 	pros::delay(550);
 	lift.move(0);
+
+	// move towards alliance balls
 	rotateToHeading(130, 300);
 	launchTriballNoPrime();
 	catapult.move(0);
@@ -256,6 +260,8 @@ void score2TriBalls(){
 	pros::delay(200);
 	moveDistance(400, 200);
 	moveDistance(300, 200);
+
+	// move towards and score in goal again
 	rotateToHeading(-110, 200);
 	moveDistance(-200, 200);
 	intake.move(-127);
@@ -360,6 +366,62 @@ void finalPartElims(){
 	moveDistance(-400, 300);
 	
 }
+
+void skillsAutoDrive() {
+	launchTriball();
+	lift.move_relative(200, 100);
+	intake.move(127);
+
+	for (int i = 0; i <= 15; i++) {
+		moveDistance(-700, 200);
+		launchTriball();
+		moveDistance(700, 200);
+	}
+
+	rotateToHeading(-90, 255);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0); 
+	moveDistance(500, 255);
+	rotateToHeading(45, 255);
+	moveDistance(2500, 255);
+	lift.move(-90);
+	pros::delay(1000);
+	lift.move(0);
+}
+
+void skillsAutoLift() {
+	launchTriball();
+	lift.move_relative(200, 100);
+	intake.move(127);
+	moveDistance(-700, 200);
+
+	for (int i = 0; i <= 15; i++) {
+		lift.move(-90);
+		pros::delay(350);
+		lift.move(0);
+		launchTriball();
+		lift.move(-90);
+		pros::delay(350);
+		lift.move(0);
+	}
+
+	moveDistance(700, 200);
+	rotateToHeading(-90, 255);
+	lift.move(90);
+	pros::delay(300);
+	lift.move(0); 
+	moveDistance(500, 255);
+	rotateToHeading(45, 255);
+	moveDistance(2500, 255);
+	lift.move(-90);
+	pros::delay(1000);
+	lift.move(0);
+}
+
+
+
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
