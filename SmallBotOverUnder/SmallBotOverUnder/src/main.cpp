@@ -1,5 +1,6 @@
 #include "main.h"
 #include <iostream>
+#include "cmath"
 using namespace std;
 
 // Controller Setup
@@ -40,8 +41,9 @@ void drive() {
 	int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 	
-	leftSideMotors = power + turn;
-	rightSideMotors = power - turn;
+	leftSideMotors = pow((power + turn), 3) / pow(127, 2);
+    rightSideMotors = pow((power - turn), 3) / pow(127, 2);
+
 }
 
 // Move x distance
@@ -198,8 +200,9 @@ void on_left_button() {
 	}
 }
 
+// First half of auton
 void score2TriBalls(){
-	//move lift to deploy
+  	//move lift to deploy
 	lift.move(127);
 	pros::delay(300);
 	lift.move(0);
@@ -223,6 +226,7 @@ void score2TriBalls(){
 	//go to goal
 	rotateToHeading(-45, 100);
 	intake.move(0);
+
 	moveDistance(-1300, 300);
 	rotateToHeading(-25, 100);
 	moveDistance(300, 250);
@@ -266,6 +270,7 @@ void score2TriBalls(){
 	moveDistance(-1200, 300);
 }
 
+// Second half of auton for 6 ball auton
 void finalPartQuals(){
 	moveDistance(1300, 300);
 	lift.move(90);
@@ -306,6 +311,7 @@ void finalPartQuals(){
 	moveDistance(3200, 300);
 }
 
+// Final part of auton for 8 triball
 void finalPartElims(){
 	moveDistance(900, 300);
 	rotateToHeading(-40, 300);
@@ -433,7 +439,6 @@ void autonomous() {
 		pros::lcd::set_text(4, "Ruh-Roh Raggy, We forgot to select the auton!!");
 		
 	}
-	// primeCatapult();
 }
 
 
