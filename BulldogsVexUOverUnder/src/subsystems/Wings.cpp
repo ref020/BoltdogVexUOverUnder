@@ -39,14 +39,6 @@ void wingsPeriodic(bool override) {
 		// flipLeftWing(0);
 		manualCloseRightWing();
 	}
-	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-		// flipWings(300);
-		manualOpenWings();
-	}
-	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-		// flipWings(300);
-		manualCloseWings();
-	}
 	else {
 		stopRightWing();
 	}

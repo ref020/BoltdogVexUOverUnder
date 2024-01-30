@@ -16,21 +16,21 @@ bool isElims = false;
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-	pros::lcd::set_text(2, "Skills Run");
+	pros::lcd::set_text(0, "Skills Run");
 	isSkills = true;
 	isElims = false;
 	isQuals = false;	
 }
 
 void on_left_button() {
-	pros::lcd::set_text(2, "Elims Run");
+	pros::lcd::set_text(0, "Elims Run");
 	isSkills = false;
 	isElims = true;
 	isQuals = false;	
 }
 
 void on_right_button() {
-	pros::lcd::set_text(2, "Quals Run");
+	pros::lcd::set_text(0, "Quals Run");
 	isSkills = false;
 	isElims = false;
 	isQuals = true;	
@@ -47,7 +47,9 @@ void initialize() {
 	drivetrainInitialize();
 	wingsInitialize();
 	climberInitialize();
-	pros::lcd::register_btn1_cb(on_center_button);	
+	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::register_btn0_cb(on_left_button);
+	pros::lcd::register_btn2_cb(on_right_button);
 }
 
 /**
@@ -80,18 +82,22 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	if (isQuals) {
+	// if (isQuals) {
 		matchQualsThreeBallAuto();
-	}
-	else if (isElims) {
-		matchElimsAuto();
-	}
-	else if (isSkills) {
-		skillsAuto();
-	}
-	else {
-		// D:
-	}
+	// }
+	// else if (isElims) {
+	// 	matchElimsAuto();
+	// };[
+
+
+
+	
+	// else if (isSkills) {
+	// 	skillsAuto();
+	// }
+	// else {
+	// 	// D:
+	// }
 }
 
 /**
@@ -120,9 +126,6 @@ void opcontrol() {
 			climberPeriodic(override);
 			kickerPeriodic(override);
 
-		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
-			autonomous();
-		}
 		
 
 		pros::delay(10);

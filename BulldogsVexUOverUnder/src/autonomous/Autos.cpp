@@ -7,7 +7,7 @@ void matchQualsThreeBallAuto() {
 	rotateToHeading(-15, 255);
 	flipLeftWing(400, 600);
 	flipRightWing(400, 600);
-	pros::delay(2000);
+	pros::delay(5000);
 	spinKicker();
 	driveStraightDistance(2000, 255);
 	flipRightWing(150, 600);
@@ -41,7 +41,7 @@ void matchQualsFiveBallAuto() {
 	// driveStraightDistance(100, 255);
 	driveStraightDistance(-500, 255);
 	rotateToHeading(-90, 175);
-	pros::delay(2);
+	pros::delay(2000);
 	flipLeftWing(400, 600);
 	flipRightWing(400, 600);
 	// spinKicker();
@@ -54,12 +54,20 @@ void matchQualsFiveBallAuto() {
 
 void matchElimsAuto() {
     scoreFirstThreeTriballs();
-	flipLeftWing(223, 600);
-	flipRightWing(223, 600);
-	rotateToHeading(70, 255);
-	driveStraightDistance(1500, 255);
-	rotateToHeading(-60, 255);
-
+	rotateToHeading(75, 255);
+	flipLeftWing(233, 600);
+	flipRightWing(233, 600);
+	driveStraightDistance(900, 255);
+	rotateToHeading(-65, 175);
+	spinKicker();
+	flipLeftWing(140, 100);
+	flipRightWing(140, 100);
+	driveStraightDistance(800, 255);
+	driveStraightDistance(300, 50);
+	driveStraightDistance(100, 255);
+	stopKicker();
+	flipLeftWing(233, 600);
+	flipRightWing(233, 600);
 }
 
 void skillsAuto() {
@@ -80,16 +88,16 @@ void skillsAuto() {
 	pros::delay(300);
 	flipLeftWing(40, 600);	
 
-	for (int i = 0; i <= 15; i++) {
+	for (int i = 0; i <= 22; i++) {
 		flipLeftWing(400, 600);	
 		pros::delay(300);
 		flipLeftWing(40, 600);	
 		pros::delay(1200);
 	}
 
-	rotateToHeading(100, 255);
+	rotateToHeading(130, 255);
 	driveStraightDistance(800, 255);
-	rotateToHeading(45, 255);
+	rotateToHeading(30, 255);
 	driveStraightDistance(3200, 500);
 	driveStraightDistance(-1000, 500);
 	driveStraightDistance(2000, 500);
@@ -101,6 +109,7 @@ void skillsAuto() {
 }
 
 void scoreFirstThreeTriballs() {
+	pros::delay(10000);
 	driveStraightDistance(2800, 255);
 	spinKicker();
 	driveStraightDistance(600, 100);

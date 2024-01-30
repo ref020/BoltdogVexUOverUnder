@@ -29,8 +29,8 @@ void drivetrainPeriodic(bool override) {
             x2 = coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
         }
         else{
-            y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
-            x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * .5);
+            y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .6);
+            x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * .6);
         }
         tankDrive(x2, y1);
     }
@@ -41,17 +41,17 @@ void drivetrainPeriodic(bool override) {
             x2 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
         }
         else{
-            y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .5);
-            x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .5);
+            y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .6);
+            x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .6);
         }
         arcadeDrive(y1, x2);
     }
 
-    pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(fLDrive.get_position()));
+    // pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(fLDrive.get_position()));
     pros::lcd::set_text(6, "Drivetrain Right Encoder: " + to_string(fRDrive.get_position()));
 
 
-    //arcade drive
+    //arcade drive 
 
 
 }

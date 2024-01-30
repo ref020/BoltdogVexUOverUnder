@@ -1,0 +1,31 @@
+pros::Controller master (pros::E_CONTROLLER_MASTER);
+pros::Motor cat_motor (4);
+while(true){
+	//Cat Functions
+	//Prime the cata
+	if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+  	catMotor.move(100);
+	}
+
+	//Launch the cata
+	//AKA Send that thang to the shadow realm
+	else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+	catMotor.move(-100);
+	}
+
+	else catMotor.brake();
+    pros::delay(2);
+	}
+
+//Wing Code
+	//Close Wings
+	if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+		wingMotor.move(100);
+	}
+
+	//Open Wings
+	else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+		wingMotor.move(-100);
+	}
+
+	else wingMotor.brake();
