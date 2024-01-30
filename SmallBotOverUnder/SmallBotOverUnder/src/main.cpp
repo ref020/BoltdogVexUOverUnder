@@ -35,6 +35,8 @@ static bool qual = true;
 static bool red = false;
 static bool blue = true;
 
+static bool isMatchLoading = false;
+
 
 // User Drive Function
 void drive() {
@@ -123,11 +125,27 @@ void launchTriballNoPrime() {
 	pros::delay(200);
 	}
 
+void matchLoad() {
+	while(master.get_digital(DIGITAL_X)) {
+		lift.move(-90);
+		pros::delay(650);
+		lift.move(0);
+		pros::delay(500);
+		intake.move(0);
+		launchTriball();
+		lift.move(90);
+		pros::delay(650);
+		lift.move(0);
+		intake.move(127);
+		pros::delay(700);
+		}
+}
+
 /**
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
- * "Skills Run" and "Match Auton"
+ * "Skills Run" and "Match Auton" If the robot is selected for match auton, qualififaction rounds is defaultly selected
  */
 void on_center_button() {
 	static bool pressed = false;
@@ -135,7 +153,7 @@ void on_center_button() {
 
 	if (pressed) {
 
-		pros::lcd::set_text(2, "Skills Run");
+		pros::lcd::set_text(3, "Skills Run");
 		skills = true;
 		elim = false;
 		qual = false;
@@ -144,6 +162,8 @@ void on_center_button() {
 
 		pros::lcd::set_text(2, "Match Auton");
 		skills = false;
+		pros::lcd::set_text(3, "Elimination rounds auton selected");
+		qual = true;
 
 	}
 }
@@ -209,9 +229,10 @@ void score2TriBalls(){
 	//rotate to shoot
 	rotateToHeading(-55, 100);
 	//shoot
-	launchTriball();
+	launchTriballNoPrime();
+	catapult.move_relative(6687, 200);
 	//rotate to drive
-	rotateToHeading(230, 200);
+	rotateToHeading(225, 200);
 	//set lift and intake to get ball under bar
 	intake.move(40);
 	lift.move(-127);
@@ -229,15 +250,15 @@ void score2TriBalls(){
 
 	moveDistance(-1300, 300);
 	rotateToHeading(-25, 100);
-	moveDistance(300, 250);
+
 
 	// score first triball
-	intake.move(-50);
-	pros::delay(200);
+	intake.move(-100);
 	lift.move(90);
-	pros::delay(300);
+	pros::delay(600);
 	lift.move(0);
-	moveDistance(400, 300);
+	moveDistance(500, 300);
+	pros::delay(500);
 	lift.move(-90);
 	pros::delay(600);
 	lift.move(0);
@@ -250,8 +271,6 @@ void score2TriBalls(){
 
 	// move towards alliance balls
 	rotateToHeading(130, 300);
-	launchTriballNoPrime();
-	catapult.move(0);
 	intake.move(127);
 	moveDistance(-500, 200);
 	lift.move(-90);
@@ -269,11 +288,11 @@ void score2TriBalls(){
 	pros::delay(450);
 	lift.move(0);
 	intake.move(-40);
-	moveDistance(900, 250);
+	moveDistance(1200, 250);
 	lift.move(-90);
 	pros::delay(400);
 	lift.move(0);
-	moveDistance(-1200, 300);
+	moveDistance(-1300, 300);
 }
 
 // Second half of auton for 6 ball auton
@@ -283,13 +302,13 @@ void finalPartQuals(){
 	pros::delay(300);
 	lift.move(0);
 	intake.move(0);
-	rotateToHeading(65, 300);
-	moveDistance(7000, 400);
+	rotateToHeading(62.5, 300);
+	moveDistance(6000, 400);
 	moveDistance(-400, 300);
 	lift.move(90);
 	pros::delay(400);
 	lift.move(0);
-	rotateToHeading(-180, 300);
+	rotateToHeading(-175, 300);
 	moveDistance(-500, 300);
 	intake.move(127);
 	lift.move(-90);
@@ -307,12 +326,13 @@ void finalPartQuals(){
 	lift.move(-90);
 	pros::delay(400);
 	lift.move(0);
-	moveDistance(-1000, 300);
+	moveDistance(-800, 300);
 	moveDistance(1200, 300);
 	intake.move(0);
 	lift.move(90);
 	pros::delay(400);
 	lift.move(0);
+	launchTriballNoPrime();
 	rotateToHeading(-50, 300);
 	moveDistance(3200, 300);
 }
@@ -391,19 +411,24 @@ void skillsAutoDrive() {
 }
 
 void skillsAutoLift() {
-	launchTriball();
-	lift.move_relative(200, 100);
+	lift.move(90);
+	pros::delay(600);
+	lift.move(0);
 	intake.move(127);
-	moveDistance(-700, 200);
+	moveDistance(-100, 200);
+	launchTriball();
 
-	for (int i = 0; i <= 15; i++) {
+	for (int i = 0; i <= 30; i++) {
 		lift.move(-90);
-		pros::delay(350);
+		pros::delay(650);
 		lift.move(0);
+		pros::delay(500);
+		lift.move(90);
+		pros::delay(650);
+		lift.move(0);
+		intake.move(127);
 		launchTriball();
-		lift.move(-90);
-		pros::delay(350);
-		lift.move(0);
+		pros::delay(700);
 	}
 
 	moveDistance(700, 200);
@@ -482,25 +507,21 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	if (elim = true) {
+	// if (elim == true) {
 
-		score2TriBalls();
-		finalPartElims();
+	// 	score2TriBalls();
+	// 	finalPartElims();
 
-	} else if (qual = true) {
+	// } else if (qual == true) {
 
 		score2TriBalls();
 		finalPartQuals();
 
-	} else if (skills = true) {
+	// } else if (skills == true) {
 
-	//skillsAuton()
+	// 	skillsAutoLift();
 
-	} else {
-
-		pros::lcd::set_text(4, "Ruh-Roh Raggy, We forgot to select the auton!!");
-		
-	}
+	// }
 }
 
 
@@ -524,9 +545,13 @@ void opcontrol() {
 	leftLiftMotor.tare_position();
 
 	while (true) {
-		if (master.get_digital(DIGITAL_X)) {
+		if (master.get_digital(DIGITAL_LEFT) && master.get_digital(DIGITAL_RIGHT)) {
 			autonomous();
 		}
+
+		pros::lcd::set_text(6, "Catapult Encoder: " + to_string(catapult.get_position()));
+
+		matchLoad();
 		
 		pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(frontLeftMotor.get_position()));
 
@@ -576,6 +601,12 @@ void opcontrol() {
 			primeCatapult();
 		}
 
+		if (master.get_digital(DIGITAL_Y)) {
+			catapult.move(100);
+		}
+		else {
+			catapult.move(0);
+		}
 
 
 
