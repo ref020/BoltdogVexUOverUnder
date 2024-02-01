@@ -2,6 +2,7 @@
 #include <iostream>
 #include "cmath"
 using namespace std;
+#include "lemlib/api.hpp"
 
 // Controller Setup
 pros::Controller master(pros::E_CONTROLLER_MASTER);
